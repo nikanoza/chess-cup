@@ -8,7 +8,7 @@ const Landing = () => {
         <div className="bg-violet py-6 pl-14 absolute w-[45%]">
           <img src={logo} alt="logo" className="cursor-pointer" />
         </div>
-        <img src={landing} alt="" />
+        <img src={landing} alt="landingBackground" />
       </div>
       <div className="w-[55%] bg-bgRed">
         <div className="mt-[265px] pl-20">
@@ -23,7 +23,7 @@ const Landing = () => {
           <h1 className="text-[80px] font-extrabold text-white nunito uppercase">
             who we are
           </h1>
-          <Link to={"/experience"}>
+          <Link to={"/personal"}>
             <button className="mt-[102px] bg-[#212529] text-white py-[13px] px-6 rounded-lg">
               Get started
             </button>
