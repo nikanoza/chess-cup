@@ -7,7 +7,7 @@ const personalInfoSchema = Yup.object().shape({
       .email("Invalid email format")
       .required("Email is required"),
     tel: Yup.string().trim().required("Phone number is required"),
-    date: Yup.string().trim().required("Date of birth is required"),
+    date: Yup.string().trim().required("Date of birth is required").min(10),
 });
 
 export default personalInfoSchema;

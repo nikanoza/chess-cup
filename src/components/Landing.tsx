@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import landing from "../assets/lending.png";
 import logo from "../assets/logo.svg";
+import { ArrowRight } from "../svg";
+
 const Landing = () => {
   return (
     <div className="w-full min-h-screen flex justify-between">
@@ -24,8 +26,9 @@ const Landing = () => {
             who we are
           </h1>
           <Link to={"/personal"}>
-            <button className="mt-[102px] bg-[#212529] text-white py-[13px] px-6 rounded-lg">
+            <button className="flex flex-row items-center gap-2 mt-[102px] bg-[#212529] text-white py-[13px] px-6 rounded-lg">
               Get started
+              <ArrowRight />
             </button>
           </Link>
         </div>

@@ -1,6 +1,6 @@
 import { InputMask } from "@react-input/mask";
 import { ArrowRight } from "../svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { personalInfoSchema } from "../schemas";
@@ -8,20 +8,27 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 
+interface FormData {
+  name: string;
+  email: string;
+  tel: string;
+  date: string;
+}
+
 const PersonalInfo = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     resolver: yupResolver(personalInfoSchema),
   });
 
-  console.log("ERRORS:", errors.email);
+  const navigate = useNavigate();
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
+  const onSubmit = async () => {
     toast.success("Everything is okay");
+    navigate("/experience");
   };
 
   useEffect(() => {
@@ -43,7 +50,7 @@ const PersonalInfo = () => {
       <hr />
       <div className="pt-[60px] pl-12 flex flex-row items-center">
         <div className="flex flex-col items-center gap-2">
-          <h1 className="bg-[#E9FAF1] w-10 h-10 flex justify-center items-center font-bold text-lg text-[#212529] rounded-md">
+          <h1 className="bg-[#def5e8] w-10 h-10 flex justify-center items-center font-bold text-lg text-[#212529] rounded-md">
             1
           </h1>
           <p className="text-[#000000] font-semibold">Personal information</p>
@@ -75,7 +82,7 @@ const PersonalInfo = () => {
             {...register("name")}
             type="text"
             placeholder="Name"
-            className={`placeholder:text-[#212529] placeholder:text-xl px-4 py-2 border-b-[1px] 
+            className={`placeholder:text-[#212529] placeholder:text-xl px-4 py-3 border-b-[1px] 
             rounded-md outline-none focus:bg-[#E9ECEF] focus:border-gray-400 ${
               errors.name && "text-[#DC3545] bg-[#FFEFEF] "
             }`}
@@ -84,7 +91,7 @@ const PersonalInfo = () => {
             {...register("email")}
             type="email"
             placeholder="Email address"
-            className={`placeholder:text-[#212529] text-xl placeholder:text-xl px-4 py-2 border-b-[1px] 
+            className={`placeholder:text-[#212529] text-xl placeholder:text-xl px-4 py-3 border-b-[1px] 
             rounded-md outline-none focus:bg-[#E9ECEF] focus:border-gray-400 ${
               errors.email && "text-[#DC3545] bg-[#FFEFEF]"
             }`}
@@ -93,7 +100,7 @@ const PersonalInfo = () => {
             {...register("tel")}
             type="tel"
             placeholder="Phone number"
-            className={`placeholder:text-[#212529] placeholder:text-xl px-4 py-2 border-b-[1px] 
+            className={`placeholder:text-[#212529] placeholder:text-xl px-4 py-3 border-b-[1px] 
             rounded-md outline-none focus:bg-[#E9ECEF] focus:border-gray-400 ${
               errors.tel && "text-[#DC3545] bg-[#FFEFEF]"
             }`}
@@ -103,7 +110,7 @@ const PersonalInfo = () => {
             placeholder="Date of birth"
             mask="dd.mm.yyyy"
             replacement={{ d: /\d/, m: /\d/, y: /\d/ }}
-            className={`placeholder:text-[#212529] placeholder:text-xl px-4 py-2 border-b-[1px] 
+            className={`placeholder:text-[#212529] placeholder:text-xl px-4 py-3 border-b-[1px] 
             rounded-md outline-none focus:bg-[#E9ECEF] focus:border-gray-400 ${
               errors.date && "text-[#DC3545] bg-[#FFEFEF]"
             }`}
