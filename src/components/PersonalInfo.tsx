@@ -1,12 +1,12 @@
 import { InputMask } from "@react-input/mask";
-import { ArrowRight } from "../svg";
+import { ArrowRight, CheckCircle } from "../svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { personalInfoSchema } from "../schemas";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface FormData {
   name: string;
@@ -23,6 +23,21 @@ const PersonalInfo = () => {
   } = useForm<FormData>({
     resolver: yupResolver(personalInfoSchema),
   });
+
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [number, setNumber] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+
+  useEffect(() => {
+    if (
+      name.length > 2 &&
+      email.includes("@gmail.com") &&
+      number.length > 8 &&
+      date.length === 10
+    )
+      toast.success("Everything is okay");
+  }, [name, email, number, date, errors]);
 
   const navigate = useNavigate();
 
@@ -78,44 +93,70 @@ const PersonalInfo = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-10 mt-[85px] max-w-[775px]"
         >
-          <input
-            {...register("name")}
-            type="text"
-            placeholder="Name"
-            className={`placeholder:text-[#212529] placeholder:text-xl px-4 py-3 border-b-[1px] 
+          <div className="w-full relative flex items-center">
+            <input
+              {...register("name")}
+              type="text"
+              placeholder="Name"
+              onChange={(e) => setName(e.target.value)}
+              className={`w-full placeholder:text-[#212529] placeholder:text-xl px-4 py-3 border-b-[1px] 
             rounded-md outline-none focus:bg-[#E9ECEF] focus:border-gray-400 ${
-              errors.name && "text-[#DC3545] bg-[#FFEFEF] "
+              errors.name && name.length <= 2 && "text-[#DC3545] bg-[#FFEFEF] "
             }`}
-          />
-          <input
-            {...register("email")}
-            type="email"
-            placeholder="Email address"
-            className={`placeholder:text-[#212529] text-xl placeholder:text-xl px-4 py-3 border-b-[1px] 
+            />
+            <span className="absolute right-2">
+              {name.length > 2 && <CheckCircle />}
+            </span>
+          </div>
+          <div className="relative flex items-center">
+            <input
+              {...register("email")}
+              type="email"
+              placeholder="Email address"
+              onChange={(e) => setEmail(e.target.value)}
+              className={`w-full placeholder:text-[#212529] text-xl placeholder:text-xl px-4 py-3 border-b-[1px] 
             rounded-md outline-none focus:bg-[#E9ECEF] focus:border-gray-400 ${
-              errors.email && "text-[#DC3545] bg-[#FFEFEF]"
+              errors.email &&
+              !email.includes("@gmail.com") &&
+              "text-[#DC3545] bg-[#FFEFEF]"
             }`}
-          />
-          <input
-            {...register("tel")}
-            type="tel"
-            placeholder="Phone number"
-            className={`placeholder:text-[#212529] placeholder:text-xl px-4 py-3 border-b-[1px] 
+            />
+            <span className="absolute right-2">
+              {email.includes("@gmail.com") && <CheckCircle />}
+            </span>
+          </div>
+          <div className="relative flex items-center">
+            <input
+              {...register("tel")}
+              type="number"
+              placeholder="Phone number"
+              onChange={(e) => setNumber(e.target.value)}
+              className={`w-full placeholder:text-[#212529] placeholder:text-xl px-4 py-3 border-b-[1px] 
             rounded-md outline-none focus:bg-[#E9ECEF] focus:border-gray-400 ${
-              errors.tel && "text-[#DC3545] bg-[#FFEFEF]"
+              errors.tel && number.length < 8 && "text-[#DC3545] bg-[#FFEFEF]"
             }`}
-          />
-          <InputMask
-            {...register("date")}
-            placeholder="Date of birth"
-            mask="dd.mm.yyyy"
-            replacement={{ d: /\d/, m: /\d/, y: /\d/ }}
-            className={`placeholder:text-[#212529] placeholder:text-xl px-4 py-3 border-b-[1px] 
+            />
+            <span className="absolute right-2">
+              {number.length > 8 && <CheckCircle />}
+            </span>
+          </div>
+          <div className="relative flex items-center">
+            <InputMask
+              {...register("date")}
+              placeholder="Date of birth"
+              mask="dd.mm.yyyy"
+              onChange={(e) => setDate(e.target.value)}
+              replacement={{ d: /\d/, m: /\d/, y: /\d/ }}
+              className={`w-full placeholder:text-[#212529] placeholder:text-xl px-4 py-3 border-b-[1px] 
             rounded-md outline-none focus:bg-[#E9ECEF] focus:border-gray-400 ${
-              errors.date && "text-[#DC3545] bg-[#FFEFEF]"
+              errors.date && date.length !== 10 && "text-[#DC3545] bg-[#FFEFEF]"
             }`}
-            separate
-          />
+              separate
+            />
+            <span className="absolute right-2">
+              {date.length == 10 && <CheckCircle />}
+            </span>
+          </div>
           <div className="mt-[88px] flex flex-row items-center justify-between">
             <Link to={"/"}>
               <button className="text-[#212529] py-3 px-6 bg-transparent border-[1px] border-[#212529] rounded-md text-xl">
